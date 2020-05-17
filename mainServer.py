@@ -16,9 +16,14 @@ def clientHandler(s):
             x[0].send("".encode())
         except:
             serverList.remove(x)
+            for y in a:
+                if y == x:
+                    break
+                y[0].send("cancel".encode())
             clientHandler(s)
             return
     for x in a:
+        x[0].send("confirmed".encode())
         s.send(';'.join(x[1:]).encode())
     s.close()
 
@@ -36,7 +41,7 @@ def main():
                 key = random.randint(1, 255)
                 s.send(key.encode())
                 serverList.append([s, addr[0], key])
-            else:
+            elif data == "I am a client":
                 threading.Thread(target=clientHandler, args=(s,)).start()
         except:
             continue

@@ -1,4 +1,4 @@
-import socket, threading
+import socket, threading, urllib.request
 mainIp = '10.70.235.114'
 HOST = '0.0.0.0'
 PORT = 5000
@@ -31,14 +31,17 @@ def nodeHandler(s, data, key):
     i = message.find(';')
     if i == -1:
         ip = message
-        message = ""# find out correct syntax
+        fp = urllib.request.urlopen(ip)
+        message = fp.read().decode("utf8")
+        fp.close()
     else:
         ip = message[:i]
         message = message[i+1:]
-    n = portFinder(ip)
-    n.send(message.encode())
-    message = n.recv().decode()
-    message = tEncode(message, key)
+        n = portFinder(ip)
+        n.send(message.encode())
+        message = n.recv().decode()
+        message = tEncode(message, key)
+    print(message)
     s.send(message.encode())
 
 

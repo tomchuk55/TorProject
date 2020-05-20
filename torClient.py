@@ -1,4 +1,4 @@
-import socket, webbrowser
+import socket, webbrowser, os
 mainIp = '10.70.235.114'
 PORT = 5000
 
@@ -37,10 +37,12 @@ def request(req):
     s.send(message.encode())
     message = s.recv().decode()
     message = mDeConstruct(data, message)
-    f = open('helloworld.html', 'w')
+    f = open('datafile.html', 'w')
     f.write(message)
-    webbrowser.open_new_tab('helloworld.html')
+    webbrowser.open_new_tab('datafile.html')
     f.close()
+    os.remove('datafile.html')
+
 
 
 def main():

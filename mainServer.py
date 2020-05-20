@@ -38,10 +38,12 @@ def main():
             s, addr = server.accept()
             data = s.recv(1024).decode()
             if data == "I am a server":
+                print("new server")
                 key = random.randint(1, 255)
                 s.send(key.encode())
                 serverList.append([s, addr[0], key])
             elif data == "I am a client":
+                print('new client')
                 threading.Thread(target=clientHandler, args=(s,)).start()
         except:
             continue

@@ -1,14 +1,20 @@
-import socket, webbrowser, os
-mainIp = '10.70.235.114'
-PORT = 5000
+import socket, webbrowser, os, tkinter as tk, config
+mainIp = config.serverIp
+PORT = config.PORT
 
 
 def tEncode(data, key):
-    return chr(ord(data)+key)
+    newdata = ""
+    for x in data:
+        newdata += chr(ord(x)+key)
+    return newdata
 
 
 def tDecode(data, key):
-    return chr(ord(data)-key)
+    newdata = ""
+    for x in data:
+        newdata += chr(ord(x)-key)
+    return newdata
 
 
 def mConstruct(data, req):
@@ -44,16 +50,22 @@ def request(req):
     os.remove('datafile.html')
 
 
+def getAddres():
+    req = myEntry.get()
+    request(req)
+    return
+
 
 def main():
-    while True:
-        req = input("insert ip")
-        request(req)
-
-
-
-
+    root.mainloop()
 
 
 if __name__ == '__main__':
+    root = tk.Tk()
+    myCanvas = tk.Canvas(root, width=400, height=400)
+    myCanvas.pack()
+    myEntry = tk.Entry(root)
+    myCanvas.create_window(200, 140, window=myEntry)
+    myButton = tk.Button(text='Tor!', command=getAddres)
+    myCanvas.create_window(200, 180, window=myButton)
     main()

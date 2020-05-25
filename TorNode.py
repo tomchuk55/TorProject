@@ -1,7 +1,7 @@
-import socket, threading, urllib.request
-mainIp = '10.70.235.114'
+import socket, threading, urllib.request, config
+mainIp = config.serverIp
 HOST = '0.0.0.0'
-PORT = 5000
+PORT = config.PORT
 
 
 def portFinder(ip):
@@ -18,11 +18,17 @@ def portFinder(ip):
 
 
 def tEncode(data, key):
-    return chr(ord(data)+key)
+    newdata = ""
+    for x in data:
+        newdata += chr(ord(x)+key)
+    return newdata
 
 
 def tDecode(data, key):
-    return chr(ord(data)-key)
+    newdata = ""
+    for x in data:
+        newdata += chr(ord(x)-key)
+    return newdata
 
 
 def nodeHandler(s, data, key):

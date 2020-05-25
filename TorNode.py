@@ -18,6 +18,7 @@ def portFinder(ip):
 
 
 def tEncode(data, key):
+    key = int(key)
     newdata = ""
     for x in data:
         newdata += chr(ord(x)+key)
@@ -25,6 +26,7 @@ def tEncode(data, key):
 
 
 def tDecode(data, key):
+    key = int(key)
     newdata = ""
     for x in data:
         newdata += chr(ord(x)-key)

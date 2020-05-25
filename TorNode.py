@@ -58,7 +58,8 @@ def main():
     s = socket.socket()
     s.connect((mainIp, PORT))
     s.send("I am a server".encode())
-    key = s.recv(3)
+    key = s.recv(1024).decode()
+    print(key)
     server = socket.socket()
     server.bind((HOST, PORT))
     server.listen(5)
@@ -66,7 +67,7 @@ def main():
         try:
             c, addr = server.accept()
             s.recv(0).decode()
-            data = s.recv(9).decode()
+            data = s.recv(1024).decode()
             if data == "confirmed":
                 data = c.recv().decode()
                 threading.Thread(target=nodeHandler, args=(s, data, key)).start()

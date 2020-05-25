@@ -4,6 +4,7 @@ PORT = config.PORT
 
 
 def tEncode(data, key):
+    print(key)
     key = int(key)
     newdata = ""
     for x in data:
@@ -39,6 +40,8 @@ def request(req):
     s.connect((mainIp, PORT))
     s.send("I am a client".encode())
     data = s.recv(1024).decode().split(";")
+    if data[0] == 'NES':
+        return
     message = mConstruct(data, req)
     s.close()
     s.connect((data[2][1], PORT))

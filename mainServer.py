@@ -18,7 +18,7 @@ def clientHandler(s):
     print(a)
     for x in a:
         try:
-            x[0].send("".encode())
+            x[0].send("".encode())#TODO add another '[0]' in x and y
         except:
             serverList.remove(x)
             for y in a:

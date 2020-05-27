@@ -67,7 +67,7 @@ def nodeHandler(s, data, key):
         print(message)
         n.send(message.encode())
         message = n.recv(1024).decode()
-        while(message[-4:] != "done"):
+        while message[-4:] != "done":
             message += n.recv(1024).decode()
         message = message[:-4]
         message = tEncode(message, key) + "done"

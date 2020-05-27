@@ -11,7 +11,7 @@ def tEncode(data, key):
         if temp > 256:
             temp -= 256
         elif temp < 0:
-            temp = 256 - temp
+            temp += 256
         newdata += chr(temp)
     return newdata
 
@@ -24,7 +24,7 @@ def tDecode(data, key):
         if temp > 256:
             temp -= 256
         elif temp < 0:
-            temp = 256 - temp
+            temp += 256
         newdata += chr(temp)
     return newdata
 

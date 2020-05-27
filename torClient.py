@@ -8,7 +8,7 @@ def tEncode(data, key):
     key = int(key)
     newdata = ""
     for x in data:
-        newdata += chr(ord(x)+key)
+        newdata += chr((ord(x)+key) % 256)
     return newdata
 
 
@@ -16,14 +16,15 @@ def tDecode(data, key):
     key = int(key)
     newdata = ""
     for x in data:
-        newdata += chr(ord(x)-key)
+        newdata += chr((ord(x)-key) % 256)
     return newdata
 
 
 def mConstruct(data, req):
     for x in data:
-        req = tEncode(req, x[2])
-        req = x[1] + ";" + req
+        print(x[1])
+        req = tEncode(req, x[1])
+        req = x[0] + ";" + req
     i = req.find(';')
     req = req[:i]
     return req
@@ -39,14 +40,19 @@ def request(req):
     s = socket.socket()
     s.connect((mainIp, PORT))
     s.send("I am a client".encode())
-    data = s.recv(1024).decode().split(";")
+    data = s.recv(1024).decode().split("*")
+    print(data)
     if data[0] == 'NES':
         return
-    message = mConstruct(data, req)
+    nodeList = []
+    for x in data:
+        nodeList.append(x.split(";"))
+    message = mConstruct(nodeList, req)
     s.close()
-    s.connect((data[2][1], PORT))
+    s = socket.socket()
+    s.connect((nodeList[2][0], PORT))
     s.send(message.encode())
-    message = s.recv().decode()
+    message = s.recv(9999999).decode()
     message = mDeConstruct(data, message)
     f = open('datafile.html', 'w')
     f.write(message)

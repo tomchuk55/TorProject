@@ -1,4 +1,4 @@
-import socket, threading, urllib.request, config
+import socket, threading, urllib.request, config, webbrowser
 mainIp = config.serverIp
 HOST = '0.0.0.0'
 PORT = config.PORT
@@ -21,7 +21,12 @@ def tEncode(data, key):
     key = int(key)
     newdata = ""
     for x in data:
-        newdata += chr(ord(x)+key)
+        temp = ord(x) + key
+        if temp > 256:
+            temp -= 256
+        elif temp < 0:
+            temp = 256 - temp
+        newdata += chr(temp)
     return newdata
 
 
@@ -29,7 +34,12 @@ def tDecode(data, key):
     key = int(key)
     newdata = ""
     for x in data:
-        newdata += chr(ord(x)-key)
+        temp = ord(x) - key
+        if temp > 256:
+            temp -= 256
+        elif temp < 0:
+            temp = 256 - temp
+        newdata += chr(temp)
     return newdata
 
 
@@ -39,6 +49,8 @@ def nodeHandler(s, data, key):
     i = message.find(';')
     if i == -1:
         ip = message
+        print(ip)
+        webbrowser.open(ip)
         fp = urllib.request.urlopen(ip)
         message = fp.read().decode("utf8")
         fp.close()
@@ -46,8 +58,9 @@ def nodeHandler(s, data, key):
         ip = message[:i]
         message = message[i+1:]
         n = portFinder(ip)
+        print(message)
         n.send(message.encode())
-        message = n.recv().decode()
+        message = n.recv(9999999).decode()
         message = tEncode(message, key)
     print(message)
     s.send(message.encode())
@@ -68,8 +81,9 @@ def main():
             c, addr = server.accept()
             s.recv(0).decode()
             data = s.recv(1024).decode()
+            print(data)
             if data == "confirmed":
-                data = c.recv().decode()
+                data = c.recv(9999999).decode()
                 threading.Thread(target=nodeHandler, args=(s, data, key)).start()
         except:
             continue

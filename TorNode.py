@@ -43,7 +43,7 @@ def tDecode(data, key):
     return newdata
 
 
-def nodeHandler(s, data, key):
+def nodeHandler(c, data, key):
     global PORT
     message = tDecode(data, key)
     i = message.find(';')
@@ -63,7 +63,7 @@ def nodeHandler(s, data, key):
         message = n.recv(9999999).decode()
         message = tEncode(message, key)
     print(message)
-    s.send(message.encode())
+    c.send(message.encode())
 
 
 
@@ -84,7 +84,7 @@ def main():
             print(data)
             if data == "confirmed":
                 data = c.recv(9999999).decode()
-                threading.Thread(target=nodeHandler, args=(s, data, key)).start()
+                threading.Thread(target=nodeHandler, args=(c, data, key)).start()
         except:
             continue
             

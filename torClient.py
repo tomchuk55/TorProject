@@ -4,11 +4,15 @@ PORT = config.PORT
 
 
 def tEncode(data, key):
-    print(key)
     key = int(key)
     newdata = ""
     for x in data:
-        newdata += chr((ord(x)+key) % 256)
+        temp = ord(x) + key
+        if temp > 256:
+            temp -= 256
+        elif temp < 0:
+            temp = 256 - temp
+        newdata += chr(temp)
     return newdata
 
 
@@ -16,7 +20,12 @@ def tDecode(data, key):
     key = int(key)
     newdata = ""
     for x in data:
-        newdata += chr((ord(x)-key) % 256)
+        temp = ord(x) - key
+        if temp > 256:
+            temp -= 256
+        elif temp < 0:
+            temp = 256 - temp
+        newdata += chr(temp)
     return newdata
 
 

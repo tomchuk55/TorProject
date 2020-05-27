@@ -18,13 +18,13 @@ def clientHandler(s):
     print(a)
     for x in a:
         try:
-            x[0].send("".encode())#TODO add another '[0]' in x and y
+            x[0][0].send("".encode())#TODO add another '[0]' in x and y
         except:
             serverList.remove(x)
             for y in a:
                 if y == x:
                     break
-                y[0].send("cancel".encode())
+                y[0][0].send("cancel".encode())
             clientHandler(s)
             return
     for x in a:

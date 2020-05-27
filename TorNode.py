@@ -92,7 +92,7 @@ def main():
             print(data)
             if data == "confirmed":
                 c, addr = server.accept()
-                data = c.recv(9999999).decode()
+                data = c.recv(1024).decode()
                 print(data)
                 threading.Thread(target=nodeHandler, args=(c, data, key)).start()
         except:

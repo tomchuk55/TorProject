@@ -18,7 +18,7 @@ def clientHandler(s):
     print(a)
     for x in a:
         try:
-            x[0].send("".encode())
+            x[0].send("t".encode())
         except:
             serverList.remove(x)
             for y in a:
@@ -29,6 +29,7 @@ def clientHandler(s):
             return
     message = ""
     for x in a:
+        print(x[1] + "confirmed")
         x[0].send("confirmed".encode())
         print(x)
         message += ';'.join(x[1:]) + "*"

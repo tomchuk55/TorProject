@@ -55,8 +55,8 @@ def nodeHandler(s, data, key):
         print(ip)
         webbrowser.open(ip)
         ip = "http://" + ip
-        fp = urllib.request.urlopen(ip)
-        message = fp.read().decode("utf8") + "done"
+        fp = urllib.request.urlopen(ip).decode()
+        message = tEncode(fp.read(), key) + "done"
         fp.close()
     else:
         ip = message[:i]
@@ -72,7 +72,7 @@ def nodeHandler(s, data, key):
         message = message[:-4]
         message = tEncode(message, key) + "done"
     print(message)
-    s.send(message.encode())
+    s.send(message)
 
 
 

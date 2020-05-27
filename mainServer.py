@@ -18,19 +18,23 @@ def clientHandler(s):
     print(a)
     for x in a:
         try:
-            x[0][0].send("".encode())#TODO add another '[0]' in x and y
+            x[0].send("".encode())
         except:
             serverList.remove(x)
             for y in a:
                 if y == x:
                     break
-                y[0][0].send("cancel".encode())
+                y[0].send("cancel".encode())
             clientHandler(s)
             return
+    message = ""
     for x in a:
-        x[0][0].send("confirmed".encode())
+        x[0].send("confirmed".encode())
         print(x)
-        s.send(';'.join(x[1:]).encode())
+        message += ';'.join(x[1:]) + "*"
+    message = message[:-1]
+    print(message)
+    s.send(message.encode())
     s.close()
 
 
@@ -48,7 +52,7 @@ def main():
                 key = str(random.randint(1, 255))
                 print(key)
                 s.send(key.encode())
-                serverList.append([[s], addr[0], key])
+                serverList.append([s, addr[0], key])
                 print("append")
             elif data == "I am a client":
                 print('new client')

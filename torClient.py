@@ -30,18 +30,20 @@ def tDecode(data, key):
 
 
 def mConstruct(data, req):
+    print(data)
     for x in data:
+        print(x)
         print(x[1])
         req = tEncode(req, x[1])
         req = x[0] + ";" + req
     i = req.find(';')
-    req = req[:i]
+    req = req[i+1:]
     return req
 
 
 def mDeConstruct(data, ans):
     for x in data:
-        ans = tDecode(ans, x[2])
+        ans = tDecode(ans, x[1])
     return ans
 
 
@@ -57,17 +59,23 @@ def request(req):
     for x in data:
         nodeList.append(x.split(";"))
     message = mConstruct(nodeList, req)
+    print(message)
     s.close()
     s = socket.socket()
     s.connect((nodeList[2][0], PORT))
     s.send(message.encode())
-    message = s.recv(9999999).decode()
-    message = mDeConstruct(data, message)
-    f = open('datafile.html', 'w')
+    message = s.recv(1024)
+    while message[-4:] != b"done":
+        message += s.recv(1024)
+    print(message)
+    message = bytes(message[:-4])
+    print(message)
+    #message = mDeConstruct(data, message)
+    f = open('datafile.html', 'wb')
     f.write(message)
     webbrowser.open_new_tab('datafile.html')
     f.close()
-    os.remove('datafile.html')
+    #os.remove('datafile.html')
 
 
 def getAddres():
@@ -78,6 +86,7 @@ def getAddres():
 
 def main():
     root.mainloop()
+    os.remove('datafile.html')
 
 
 if __name__ == '__main__':

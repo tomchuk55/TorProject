@@ -41,12 +41,6 @@ def mConstruct(data, req):
     return req
 
 
-def mDeConstruct(data, ans):
-    for x in data:
-        ans = tDecode(ans, x[1])
-    return ans
-
-
 def request(req):
     s = socket.socket()
     s.connect((mainIp, PORT))
@@ -70,13 +64,11 @@ def request(req):
     print(message)
     message = bytes(message[:-4])
     print(message)
-    #message = mDeConstruct(data, message)
     f = open('datafile.html', 'wb')
     f.write(message)
     webbrowser.open_new_tab('datafile.html')
     f.close()
-    #os.remove('datafile.html')
-
+    
 
 def getAddres():
     req = myEntry.get()

@@ -56,13 +56,11 @@ def nodeHandler(s, data, key):
         webbrowser.open(ip)
         ip = "http://" + ip
         fp = urllib.request.urlopen(ip)
-        #message = tEncode(str(fp.read())[2:-1], key) + "done"
         message = fp.read() + b"done"
         fp.close()
     else:
         ip = message[:i]
         message = message[i+1:]
-        #n = portFinder(ip)
         n = socket.socket()
         n.connect((ip, PORT))
         print(message)
@@ -71,7 +69,6 @@ def nodeHandler(s, data, key):
         while message[-4:] != b"done":
             message += n.recv(1024)
         message = message[:-4]
-        #message = tEncode(message, key) + "done"
         message += b"done"
     print(message)
     s.send(message)

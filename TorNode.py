@@ -1,5 +1,6 @@
 import socket, threading, urllib.request, config, webbrowser
 mainIp = config.serverIp
+PORT = config.PORT
 HOST = '0.0.0.0'
 
 
@@ -80,7 +81,7 @@ def main():
     key = s.recv(1024).decode()
     print(key)
     server = socket.socket()
-    server.bind((HOST, 0))
+    server.bind((HOST, PORT))
     server.listen(5)
     while True:
         try:

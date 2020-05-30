@@ -78,7 +78,10 @@ def getAddres():
 
 def main():
     root.mainloop()
-    os.remove('datafile.html')
+    try:
+        os.remove('datafile.html')
+    except:
+        return
 
 
 if __name__ == '__main__':

@@ -1,6 +1,5 @@
 import threading, socket, random
 HOST = '0.0.0.0'
-PORT = 5000
 serverList = []
 
 
@@ -42,7 +41,7 @@ def clientHandler(s):
 def main():
     # Creating connection with new server
     server = socket.socket()
-    server.bind((HOST, PORT))
+    server.bind((HOST, 0))
     server.listen(5)
     while True:
         try:

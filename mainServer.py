@@ -51,9 +51,8 @@ def main():
             if data == "I am a server":
                 print("new server")
                 key = str(random.randint(1, 255))
-                print(key)
-                s.send(key.encode())
-                serverList.append([s, addr[0], key])
+                s.send("1".encode())
+                serverList.append([s, addr[0], "1"])
                 print("append")
             elif data == "I am a client":
                 print('new client')

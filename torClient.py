@@ -1,6 +1,7 @@
 import socket, webbrowser, os, tkinter as tk, config
 mainIp = config.serverIp
 PORT = config.PORT
+serverIp = ""
 
 
 def tEncode(data, key):
@@ -31,6 +32,7 @@ def tDecode(data, key):
 
 def mConstruct(data, req):
     print(data)
+    req = serverIp + "|" + req
     for x in data:
         print(x)
         print(x[1])
@@ -39,6 +41,14 @@ def mConstruct(data, req):
     i = req.find(';')
     req = req[i+1:]
     return req
+
+
+def mDeConstruct(data, message):
+    data.reverse()
+    for x in data:
+        print(x[1])
+        message = tDecode(message, x[1])
+    return message
 
 
 def request(req):
@@ -58,17 +68,10 @@ def request(req):
     s = socket.socket()
     s.connect((nodeList[2][0], PORT))
     s.send(message.encode())
-    message = s.recv(1024)
-    while message[-4:] != b"done":
-        message += s.recv(1024)
+    message = s.recv(1024).decode()
+    message = mDeConstruct(nodeList, message)
     print(message)
-    message = bytes(message[:-4])
-    print(message)
-    f = open('datafile.html', 'wb')
-    f.write(message)
-    webbrowser.open_new_tab('datafile.html')
-    f.close()
-    
+
 
 def getAddres():
     req = myEntry.get()

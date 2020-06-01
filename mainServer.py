@@ -1,6 +1,6 @@
 import threading, socket, random
 HOST = '0.0.0.0'
-PORT = config.PORT
+PORT = 5000
 serverList = []
 
 
@@ -58,6 +58,7 @@ def main():
             elif data == "I am a client":
                 print('new client')
                 threading.Thread(target=clientHandler, args=(s,)).start()
+
         except:
             continue
 

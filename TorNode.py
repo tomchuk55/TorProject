@@ -51,13 +51,12 @@ def nodeHandler(s, data, key):
     print(message)
     i = message.find(';')
     if i == -1:
-        ip = message
-        print(ip)
-        webbrowser.open(ip)
-        ip = "http://" + ip
-        fp = urllib.request.urlopen(ip)
-        message = fp.read() + b"done"
-        fp.close()
+        i = message.find("|")
+        k = socket.socket()
+        k.connect((message[:i], PORT))
+        k.send(message[i+1:].encode())
+        message = k.recv(1024).decode()
+        print(message)
     else:
         ip = message[:i]
         message = message[i+1:]
@@ -65,11 +64,7 @@ def nodeHandler(s, data, key):
         n.connect((ip, PORT))
         print(message)
         n.send(message.encode())
-        message = n.recv(1024)
-        while message[-4:] != b"done":
-            message += n.recv(1024)
-        message = message[:-4]
-        message += b"done"
+        message = n.recv(1024).decode()
     print(message)
     s.send(message)
 

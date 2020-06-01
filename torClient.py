@@ -1,7 +1,7 @@
 import socket, webbrowser, os, tkinter as tk, config
 mainIp = config.serverIp
 PORT = config.PORT
-serverIp = ""
+serverIp = "10.70.232.240"
 
 
 def tEncode(data, key):
